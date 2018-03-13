@@ -35,7 +35,7 @@ public class GeograficoSimple extends Algoritmo {
         for (int i = 0; i < nodos.size(); i++) {
             for (int j = 0; j < nodos.size(); j++) {
                 if(i!=j){
-                    if(distancia <= calculaDistancia(nodos.get(i), nodos.get(j))){
+                    if(distancia >= calculaDistancia(nodos.get(i), nodos.get(j))){
                         Vertice vertice = new Vertice();
                         vertice.setNodoX(String.valueOf(i));
                         vertice.setNodoY(String.valueOf(j));
