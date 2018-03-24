@@ -7,8 +7,9 @@ package ada.algoritmos;
 
 import ada.beans.Grafo;
 import ada.beans.Nodo;
-import ada.beans.Vertice;
+import ada.beans.Arista;
 import ada.implementacion.GephiArchivo;
+import java.util.ArrayList;
 
 /**
  *
@@ -25,16 +26,39 @@ public class ErdosRenyi extends Algoritmo{
         }
         System.out.println("----------------  Erdos-Renyi  --------------------");
         algoritmoErdosRenyi(aristasNum);
-        Grafo grafo= new Grafo(nodos,null);
-        GephiArchivo archivo = new GephiArchivo(TIPOERDOS, grafo);
+        Grafo grafo= new Grafo(nodos,new ArrayList());
+
+        Grafo grafoDFSR = new Grafo(new ArrayList(), new ArrayList());
+        grafoDFSR.setNodos(nodos);
+        grafoDFSR.setVertices(grafo.getVertices());
         
+        Grafo grafoDFSI = new Grafo(new ArrayList(), new ArrayList());
+        grafoDFSI.setVertices(grafo.getVertices());
+        grafoDFSI.setNodos(nodos);
+        
+        Grafo grafoBFS = new Grafo(new ArrayList(), new ArrayList());
+        grafoBFS.setVertices(grafo.getVertices());
+        grafoBFS.setNodos(nodos);
+        
+        DFS dfsr = new DFS(grafoDFSR,1);
+        DFS dfsi = new DFS(grafoDFSI,2);
+        BFS bfs = new BFS(grafoBFS);
+        
+        System.out.println("1");
+        GephiArchivo archivo = new GephiArchivo(TIPOERDOS, grafo,1);
+        System.out.println("2");
+        GephiArchivo archivo1 = new GephiArchivo(TIPOERDOS, grafoDFSR,2);
+        System.out.println("3");
+        GephiArchivo archivo2 = new GephiArchivo(TIPOERDOS, grafoDFSI,3);
+        System.out.println("4");
+        GephiArchivo archivo3 = new GephiArchivo(TIPOERDOS, grafoBFS,4);
     }
     
     public void algoritmoErdosRenyi(int numeroAristas){
         
                 
         for (int j = 0; j < numeroAristas; j++) { 
-            Vertice vertice = new Vertice();
+            Arista vertice = new Arista();
             int nodoX = generaNumero(nodos.size());
             int nodoY = generaNumero(nodos.size());
             

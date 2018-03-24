@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Grafo {
     List<Nodo> nodos;
-    List<Vertice> vertices;
+    List<Arista> vertices;
     
     public Grafo(List nodos, List vertices){
         this.nodos = new ArrayList<>();
@@ -36,14 +36,14 @@ public class Grafo {
     }
     
     public void setNodos(List<Nodo> nodos) {
-        this.nodos = nodos;
+        this.nodos.addAll(nodos);
     }
 
-    public List<Vertice> getVertices() {
+    public List<Arista> getVertices() {
         return vertices;
     }
     
-    public Vertice getVertice(int indice) {
+    public Arista getVertice(int indice) {
         if(indice > 0 && indice <= nodos.size()){
             return vertices.get(indice);
         }else{
@@ -51,8 +51,8 @@ public class Grafo {
         }
     }
 
-    public void setVertices(List<Vertice> vertices) {
-        this.vertices = vertices;
+    public void setVertices(List<Arista> vertices) {
+        this.vertices.addAll(vertices);
     }
     
 }

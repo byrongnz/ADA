@@ -16,23 +16,24 @@ import java.util.List;
  */
 public class Nodo {
     private String id;
-    private List<Vertice> vertices; 
+    private List<Arista> vertices; 
     private double coordenadaX;
     private double coordenadaY;
     private final static String GEOGRAFICO = "Geografico";
     private double porcentaje = 1;
     private int grado = 0;
     private boolean existe = false;
-    
+    private boolean explorado = false;
+
     public Nodo(int id){
         setId(String.valueOf(id));
         //this.porcentaje = 100;
-        vertices = new ArrayList<Vertice>();
+        vertices = new ArrayList<Arista>();
     }
     
     public Nodo(int id, String tipo){
         setId(String.valueOf(id));
-        vertices = new ArrayList<Vertice>();
+        vertices = new ArrayList<Arista>();
         
         if(tipo.equals(GEOGRAFICO)){
             SecureRandom random = new SecureRandom();
@@ -51,26 +52,26 @@ public class Nodo {
         this.id = id;
     }
 
-    public Vertice getVertice(int id) {
+    public Arista getVertice(int id) {
         return vertices.get(id);
     }
     
-    public List<Vertice> getVertices() {
+    public List<Arista> getVertices() {
         return vertices;
     }
 
-    public void setVertice(Vertice vertice, int id) {
-        //this.vertice = new Vertice();
+    public void setVertice(Arista vertice, int id) {
+        //this.vertice = new Arista();
         this.vertices.set(id, vertice);
     }
     
-    public void addVertice(Vertice vertice) {
-        //this.vertice = new Vertice();
+    public void addVertice(Arista vertice) {
+        //this.vertice = new Arista();
         this.vertices.add(vertice);
     }
     
-    public void setVertices(List<Vertice> vertices) {
-        //this.vertice = new Vertice();
+    public void setVertices(List<Arista> vertices) {
+        //this.vertice = new Arista();
         this.vertices = vertices;
     }
 
@@ -112,6 +113,14 @@ public class Nodo {
 
     public void setExiste(boolean existe) {
         this.existe = existe;
+    }
+    
+    public boolean isExplorado() {
+        return explorado;
+    }
+
+    public void setExplorado(boolean explorado) {
+        this.explorado = explorado;
     }
     
     @Override
