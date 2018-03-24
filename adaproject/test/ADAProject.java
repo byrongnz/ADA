@@ -24,10 +24,10 @@ public class ADAProject {
         // TODO code application logic here
        
         
-//        ErdosRenyi erdos = new ErdosRenyi(100, 10);
-//        Gilbert gilbert = new Gilbert(100, .5);
-        GeograficoSimple gs = new GeograficoSimple(1000, .04);
-//        BarabasiAlbert ba = new BarabasiAlbert(1000, 5);
+//        ErdosRenyi erdos = new ErdosRenyi(100, 90);
+//        Gilbert gilbert = new Gilbert(100, .005);
+//        GeograficoSimple gs = new GeograficoSimple(100, .05);
+        BarabasiAlbert ba = new BarabasiAlbert(100, 5);
     }
     
 }
