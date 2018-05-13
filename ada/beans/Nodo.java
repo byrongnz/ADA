@@ -7,7 +7,6 @@ package ada.beans;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,6 +23,10 @@ public class Nodo {
     private int grado = 0;
     private boolean existe = false;
     private boolean explorado = false;
+    
+    private boolean visitado = false;
+    private int distacia = -1;
+    private String nodoPrevio = "";
 
     public Nodo(int id){
         setId(String.valueOf(id));
@@ -42,6 +45,30 @@ public class Nodo {
             System.out.println("Coordenada nodo "+id+" X: "+coordenadaX+" Y:"+coordenadaY);
         }
 
+    }
+
+    public String getNodoPrevio() {
+        return nodoPrevio;
+    }
+
+    public void setNodoPrevio(String nodoPrevio) {
+        this.nodoPrevio = nodoPrevio;
+    }
+
+    public int getDistacia() {
+        return distacia;
+    }
+
+    public void setDistacia(int distacia) {
+        this.distacia = distacia;
+    }
+     
+    public boolean isVisitado() {
+        return visitado;
+    }
+
+    public void setVisitado(boolean visitado) {
+        this.visitado = visitado;
     }
 
     public String getId() {
