@@ -9,6 +9,7 @@ import ada.beans.Grafo;
 import ada.beans.Nodo;
 import ada.beans.Arista;
 import ada.implementacion.GephiArchivo;import java.util.ArrayList;
+import java.util.List;
 ;
 
 /**
@@ -29,30 +30,37 @@ public class Gilbert extends Algoritmo{
         System.out.println("----------------  Gilbert  --------------------");
         algoritmoGilbert();
         Grafo grafo= new Grafo(nodos, new ArrayList());
-        Grafo grafoDFSR = new Grafo(new ArrayList(), new ArrayList());
-        grafoDFSR.setNodos(nodos);
-        grafoDFSR.setVertices(grafo.getVertices());
+        Dijkstra dij = new Dijkstra();
+        List<Nodo> caminoDijk = dij.ejecutaDijkstra(grafo);
+        Grafo gDijk = new Grafo(caminoDijk,new ArrayList());
         
-        Grafo grafoDFSI = new Grafo(new ArrayList(), new ArrayList());
-        grafoDFSI.setVertices(grafo.getVertices());
-        grafoDFSI.setNodos(nodos);
+        GephiArchivo archivo = new GephiArchivo(TIPOGILBERT, gDijk);
         
-        Grafo grafoBFS = new Grafo(new ArrayList(), new ArrayList());
-        grafoBFS.setVertices(grafo.getVertices());
-        grafoBFS.setNodos(nodos);
         
-        DFS dfsr = new DFS(grafoDFSR,1);
-        DFS dfsi = new DFS(grafoDFSI,2);
-        BFS bfs = new BFS(grafoBFS);
-        
-        System.out.println("1");
-        GephiArchivo archivo = new GephiArchivo(TIPOGILBERT, grafo,1);
-        System.out.println("2");
-        GephiArchivo archivo1 = new GephiArchivo(TIPOGILBERT, grafoDFSR,2);
-        System.out.println("3");
-        GephiArchivo archivo2 = new GephiArchivo(TIPOGILBERT, grafoDFSI,3);
-        System.out.println("4");
-        GephiArchivo archivo3 = new GephiArchivo(TIPOGILBERT, grafoBFS,4);
+//        Grafo grafoDFSR = new Grafo(new ArrayList(), new ArrayList());
+//        grafoDFSR.setNodos(nodos);
+//        grafoDFSR.setVertices(grafo.getVertices());
+//        
+//        Grafo grafoDFSI = new Grafo(new ArrayList(), new ArrayList());
+//        grafoDFSI.setVertices(grafo.getVertices());
+//        grafoDFSI.setNodos(nodos);
+//        
+//        Grafo grafoBFS = new Grafo(new ArrayList(), new ArrayList());
+//        grafoBFS.setVertices(grafo.getVertices());
+//        grafoBFS.setNodos(nodos);
+//        
+//        DFS dfsr = new DFS(grafoDFSR,1);
+//        DFS dfsi = new DFS(grafoDFSI,2);
+//        BFS bfs = new BFS(grafoBFS);
+//        
+//        System.out.println("1");
+//        GephiArchivo archivo = new GephiArchivo(TIPOGILBERT, grafo,1);
+//        System.out.println("2");
+//        GephiArchivo archivo1 = new GephiArchivo(TIPOGILBERT, grafoDFSR,2);
+//        System.out.println("3");
+//        GephiArchivo archivo2 = new GephiArchivo(TIPOGILBERT, grafoDFSI,3);
+//        System.out.println("4");
+//        GephiArchivo archivo3 = new GephiArchivo(TIPOGILBERT, grafoBFS,4);
         
     }
     
