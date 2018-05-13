@@ -31,6 +31,12 @@ public class GephiArchivo {
         generaArchivo(grafo, numeroArchivo);
     }
     
+    public GephiArchivo(String tipoAlgoritmo, Grafo grafo){
+        this.algoritmo = tipoAlgoritmo;
+        //0 para imprimir el nombre de dijkstra
+        generaArchivo(grafo, 0);
+    }
+    
     private void generaArchivo(Grafo grafo, int numeroArchivo){
         
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy hh-mm-ss");
@@ -54,11 +60,17 @@ public class GephiArchivo {
         String encabezado = "graph "+ algoritmo +"{\n";
         String grafoFin = "}";
         String cuerpoArchivo = "";
-        if(grafo.getVertices().isEmpty()){
-            cuerpoArchivo = encabezado + generaGrafo(grafo)+grafoFin;
+        
+        if(numeroArchivo == 0){
+            cuerpoArchivo = encabezado + generaGrafoConNombre(grafo)+grafoFin;            
         }else{
-            cuerpoArchivo = encabezado + generaGrafoByArista(grafo.getVertices())+grafoFin;
+            if(grafo.getVertices().isEmpty()){
+                cuerpoArchivo = encabezado + generaGrafo(grafo)+grafoFin;
+            }else{
+                cuerpoArchivo = encabezado + generaGrafoByArista(grafo.getVertices())+grafoFin;
+            }
         }
+        
         File archivo = new File(nombreArchivo);
         
         BufferedWriter bw = null;
@@ -87,7 +99,7 @@ public class GephiArchivo {
         }
     }
     
-    public String generaGrafo(Grafo grafo){
+    private String generaGrafo(Grafo grafo){
         String linea ="";
         
         if(!grafo.getNodos().isEmpty()){
@@ -108,13 +120,44 @@ public class GephiArchivo {
         return linea;
     }
     
-    public String generaGrafoByArista(List<Arista> aristas){
+    private String generaGrafoByArista(List<Arista> aristas){
         String linea ="";
         if(!aristas.isEmpty()){
             for (int i = 0; i < aristas.size(); i++) {                
                 System.out.println("Arista: "+aristas.get(i).toString());               
                 linea= linea + aristas.get(i).getNodoX()+"--"+
                         aristas.get(i).getNodoY()+";"+"\n";                                                    
+            }
+        }else{
+            linea = "Los nodos estan vacios";
+        }
+        System.out.println("FIN...");
+//        System.out.println("Linea: "+linea);
+        return linea;
+    }
+    
+    private String generaGrafoConNombre(Grafo grafo){
+        String linea ="";
+        
+        if(!grafo.getNodos().isEmpty()){
+            for (int i = 0; i < grafo.getNodos().size(); i++) {
+                if(grafo.getNodos().get(i)!=null){
+                    //System.out.println("Nodo: "+grafo.getNodos().get(i).getId()+" "+grafo.getNodos().get(i).getVertices().toString());                    
+                    if(!grafo.getNodos().get(i).getNodoPrevio().equals("-")){
+                        System.out.println("Nodo I:"+grafo.getNodos().get(i).getId()+
+                                " Distancia: "+grafo.getNodos().get(i).getDistacia()+                            
+                                " Nodo T:"+grafo.getNodos().get(i).getNodoPrevio());
+                        if(i == 0){
+                            linea= linea + grafo.getNodos().get(i).getId()+
+                                "("+grafo.getNodos().get(i).getDistacia()+")"+"--"+
+                                grafo.getNodos().get(i).getNodoPrevio()+";"+"\n";
+                        }else{
+                            linea= linea + grafo.getNodos().get(i).getId()+"--"+
+                                grafo.getNodos().get(i).getNodoPrevio()+";"+"\n";
+                        }                        
+                    }
+                    
+                }                    
             }
         }else{
             linea = "Los nodos estan vacios";
