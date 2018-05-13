@@ -6,7 +6,6 @@
 package ada.beans;
 
 
-
 /**
  *
  * @author T440
@@ -14,6 +13,21 @@ package ada.beans;
 public class Arista {
     private String nodoX;
     private String nodoY;
+    private int peso = 0;
+    
+    
+    public Arista(){
+        this.peso = (int) (Math.random()*100)+1;
+        //System.out.println("Peso: "+peso);
+    }
+
+    public int getPeso() {
+        return peso;
+    }
+
+    public void setPeso(int peso) {
+        this.peso = peso;
+    }
 
     public String getNodoX() {
         return nodoX;
