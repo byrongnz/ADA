@@ -25,9 +25,9 @@ public class ADAProject {
        
         
 //        ErdosRenyi erdos = new ErdosRenyi(100, 90);
-//        Gilbert gilbert = new Gilbert(100, .005);
-//        GeograficoSimple gs = new GeograficoSimple(100, .05);
-        BarabasiAlbert ba = new BarabasiAlbert(100, 5);
+        Gilbert gilbert = new Gilbert(500, .8);
+//        GeograficoSimple gs = new GeograficoSimple(1000, .1);
+//        BarabasiAlbert ba = new BarabasiAlbert(1000, 7);
     }
     
 }
