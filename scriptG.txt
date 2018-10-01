@@ -1,0 +1,245 @@
+Modificar archivo /etc/fstab 
+tmpfs /dev/shm tmpfs defaults,nodev,nosuid,noexec 0 0 
+------------------------------------------------------------------------------------------------
+df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null 
+
+df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t 
+------------------------------------------------------------------------------------------------
+Create an encrypted password with grub2-setpassword : 
+ grub2-setpassword
+Enter password: <password>
+Confirm password: <password>
+------------------------------------------------------------------------------------------------
+No se pudo
+# grep /sbin/sulogin /usr/lib/systemd/system/rescue.service ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default" 
+# grep /sbin/sulogin /usr/lib/systemd/system/emergency.service ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default" 
+------------------------------------------------------------------------------------------------
+Add the following line to /etc/security/limits.conf or a /etc/security/limits.d/* file: * hard core 0 
+------------------------------------------------------------------------------------------------
+Edit /usr/lib/systemd/system/rescue.service and /usr/lib/systemd/system/emergency.service and set ExecStart to use /sbin/sulogin or /usr/sbin/sulogin: 
+
+ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default" 
+------------------------------------------------------------------------------------------------
+# echo "Authorized uses only. All activity may be monitored and reported." > /etc/issue 
+
+# echo "Authorized uses only. All activity may be monitored and reported." > /etc/issue.net 
+------------------------------------------------------------------------------------------------
+Set the following parameter in /etc/sysctl.conf or a /etc/sysctl.d/* file: 
+net.ipv4.ip_forward = 0 
+
+# sysctl -w net.ipv4.ip_forward=0
+# sysctl -w net.ipv4.route.flush=1
+
+net.ipv4.conf.all.accept_source_route = 0COMENTADO net.ipv4.conf.default.accept_source_route = 0 COMENTADO
+
+net.ipv4.conf.all.accept_redirects = 0 net.ipv4.conf.default.accept_redirects = 0 
+# sysctl -w net.ipv4.conf.all.accept_redirects=0
+# sysctl -w net.ipv4.conf.default.accept_redirects=0 # sysctl -w net.ipv4.route.flush=1 
+------------------------------------------------------------------------------------------------
+net.ipv4.conf.all.secure_redirects = 0 net.ipv4.conf.default.secure_redirects = 0 
+net.ipv4.conf.all.log_martians = 1 
+net.ipv4.conf.default.log_martians = 1 
+net.ipv4.icmp_echo_ignore_broadcasts = 1 
+net.ipv4.icmp_ignore_bogus_error_responses = 1 
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.tcp_syncookies = 1 
+net.ipv6.conf.all.accept_ra = 0
+net.ipv6.conf.default.accept_ra = 0
+net.ipv6.conf.all.accept_redirects = 0 net.ipv6.conf.default.accept_redirects = 0 
+
+# sysctl -w net.ipv6.conf.all.accept_redirects=0
+# sysctl -w net.ipv6.conf.default.accept_redirects=0 
+# sysctl -w net.ipv6.conf.all.accept_ra=0
+# sysctl -w net.ipv6.conf.default.accept_ra=0 
+# sysctl -w net.ipv4.tcp_syncookies=1
+# sysctl -w net.ipv4.conf.all.rp_filter=1
+# sysctl -w net.ipv4.conf.default.rp_filter=1 
+# sysctl -w net.ipv4.icmp_ignore_bogus_error_responses=1
+# sysctl -w net.ipv4.icmp_echo_ignore_broadcasts=1 
+# sysctl -w net.ipv4.conf.all.log_martians=1
+# sysctl -w net.ipv4.conf.default.log_martians=1 
+# sysctl -w net.ipv4.conf.all.secure_redirects=0
+# sysctl -w net.ipv4.conf.default.secure_redirects=0 
+# sysctl -w net.ipv4.route.flush=1 
+------------------------------------------------------------------------------------------------
+Edit /etc/default/grub and remove add ipv6.disable=1 to the GRUB_CMDLINE_LINUX parameters GRUB_CMDLINE_LINUX="ipv6.disable=1" 
+
+# grub2-mkconfig > /boot/grub2/grub.cfg 
+------------------------------------------------------------------------------------------------
+# echo "ALL: ALL" >> /etc/hosts.deny 
+------------------------------------------------------------------------------------------------
+# echo "ALL: <net>/<mask>, <net>/<mask>, ..." >/etc/hosts.allow 
+where each <net>/<mask> combination (for example, "192.168.1.0/255.255.255.0") represents one network block in use by your organization that requires access to this system 
+
+
+# chown root:root /etc/hosts.allow
+# chmod 644 /etc/hosts.allow
+# chown root:root /etc/hosts.deny
+# chmod 644 /etc/hosts.deny
+------------------------------------------------------------------------------------------------
+# iptables -P INPUT DROP
+# iptables -P OUTPUT DROP
+# iptables -P FORWARD DROP
+
+# iptables -A INPUT -i lo -j ACCEPT
+# iptables -A OUTPUT -o lo -j ACCEPT
+# iptables -A INPUT -s 127.0.0.0/8 -j DROP
+
+# iptables -A OUTPUT -p tcp -m state --state NEW,ESTABLISHED -j ACCEPT 
+# iptables -A OUTPUT -p udp -m state --state NEW,ESTABLISHED -j ACCEPT 
+# iptables -A OUTPUT -p icmp -m state --state NEW,ESTABLISHED -j ACCEPT 
+# iptables -A INPUT -p tcp -m state --state ESTABLISHED -j ACCEPT 
+# iptables -A INPUT -p udp -m state --state ESTABLISHED -j ACCEPT 
+# iptables -A INPUT -p icmp -m state --state ESTABLISHED -j ACCEPT 
+
+REVISAR PUNTO 3.6
+------------------------------------------------------------------------------------------------
+Set the following parameter in /etc/audit/auditd.conf in accordance with site policy: max_log_file = <MB> 
+------------------------------------------------------------------------------------------------
+Edit /etc/default/grub and add audit=1 to GRUB_CMDLINE_LINUX: 
+GRUB_CMDLINE_LINUX="audit=1" 
+# grub2-mkconfig -o /boot/grub2/grub.cfg 
+------------------------------------------------------------------------------------------------
+# chown root:root /etc/crontab
+# chmod og-rwx /etc/crontab
+
+# chown root:root /etc/cron.hourly
+# chmod og-rwx /etc/cron.hourly
+# chown root:root /etc/cron.daily
+# chmod og-rwx /etc/cron.daily
+# chown root:root /etc/cron.weekly
+# chmod og-rwx /etc/cron.weekly
+# chown root:root /etc/cron.monthly
+# chmod og-rwx /etc/cron.monthly
+
+# chown root:root /etc/cron.d
+# chmod og-rwx /etc/cron.d
+# rm /etc/cron.deny
+# rm /etc/at.deny
+# touch /etc/cron.allow
+# touch /etc/at.allow
+# chmod og-rwx /etc/cron.allow
+# chmod og-rwx /etc/at.allow
+# chown root:root /etc/cron.allow
+# chown root:root /etc/at.allow
+------------------------------------------------------------------------------------------------
+Edit the /etc/ssh/sshd_config file to set the parameter as follows: 
+Protocol 2 
+LogLevel INFO 
+X11Forwarding no 
+MaxAuthTries 4 
+IgnoreRhosts yes 
+HostbasedAuthentication no 
+PermitRootLogin no 
+PermitEmptyPasswords no 
+PermitUserEnvironment no 
+MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128- etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com 
+ClientAliveInterval 300
+ClientAliveCountMax 0
+LoginGraceTime 60 
+AllowUsers <userlist>
+AllowGroups <grouplist>
+DenyUsers <userlist>
+DenyGroups <grouplist>
+Banner /etc/issue.net 
+------------------------------------------------------------------------------------------------
+Edit the /etc/pam.d/password-auth and /etc/pam.d/system-auth files to include the appropriate options for pam_pwquality.so and to conform to site policy: 
+password requisite pam_pwquality.so try_first_pass retry=3 
+------------------------------------------------------------------------------------------------
+Edit /etc/security/pwquality.conf to add or update the following settings to conform to site policy: 
+minlen = 14
+dcredit = -1
+ucredit = -1
+ocredit = -1
+lcredit = -1
+------------------------------------------------------------------------------------------------
+Edit the /etc/pam.d/password-auth and /etc/pam.d/system-auth files and add the following pam_faillock.so lines surrounding a pam_unix.so line modify the pam_unix.so is [success=1 default=bad] as listed in both 
+auth required pam_faillock.so preauth audit silent deny=5 unlock_time=900 auth [success=1 default=bad] pam_unix.so
+auth [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900 auth sufficient pam_faillock.so authsucc audit deny=5 unlock_time=900 
+------------------------------------------------------------------------------------------------
+Edit the /etc/pam.d/password-auth and /etc/pam.d/system-auth files to include the remember option and conform to site policy as shown 
+password sufficient pam_unix.so remember=5 
+Or
+password required pam_pwhistory.so remember=5 
+------------------------------------------------------------------------------------------------
+Set the PASS_MAX_DAYS parameter to conform to site policy in /etc/login.defs : 
+PASS_MAX_DAYS 90 
+# chage --maxdays 90 <user>
+PASS_MIN_DAYS 7 
+# chage --mindays 7 <user>
+PASS_WARN_AGE 7 
+# chage --warndays 7 <user>
+------------------------------------------------------------------------------------------------
+# useradd -D -f 30
+# chage --inactive 30 <user>
+------------------------------------------------------------------------------------------------
+Edit the /etc/bashrc, /etc/profile and /etc/profile.d/*.sh files (and the appropriate files for any other shell supported on your system) and add or edit any umask parameters as follows 
+umask 027 
+------------------------------------------------------------------------------------------------
+Edit the /etc/bashrc and /etc/profile files (and the appropriate files for any other shell supported on your system) and add or edit any umask parameters as follows: 
+TMOUT=600 
+------------------------------------------------------------------------------------------------
+Add the following line to the /etc/pam.d/su file: 
+auth required pam_wheel.so use_uid 
+wheel:x:10:root,<user list> 
+------------------------------------------------------------------------------------------------
+
+Install AIDE - Advanced Intrusion Detection Environment
+Configure periodic execution of AIDE, runs every morning at 5
+0 5 * * * /usr/sbin/aide --check
+
+Prevent Users Mounting USB Storage
+echo "install usb-storage /bin/false" > /etc/modprobe.d/usb-storage.conf
+
+Enable Secure (high quality) Password Policy
+vi /etc/security/pwquality.conf
+
+Minimum acceptable size for the new password (plus one if credits are not disabled which is the default). (See pam_cracklib manual.)
+minlen = 14
+
+The maximum credit for having uppercase characters in the new password.
+ucredit = -1
+
+The maximum credit for having digits in the new password.
+dcredit = -1
+
+The maximum credit for having other characters in the new password.
+ocredit = -1
+
+The maximum credit for having lowercase characters in the new password.
+lcredit = -1
+
+The maximum number of allowed consecutive same characters in the new password.
+maxrepeat = 3
+
+Whether to check for the words from the passwd entry GECOS string of the user.
+gecoscheck = 1
+
+The maximum number of allowed consecutive characters of the same class in the new password.
+maxclassrepeat = 3
+
+Set Last Logon/Access Notification
+Max Password Login Attempts per Session
+Set Deny For Failed Password Attempts
+Limit Password Reuse
+Open /etc/pam.d/system-auth, append remember=24 to the pam_unix.so line - preventing users from reusing passwords, remembering 24 times is the DoD standard.
+
+vi /etc/pam.d/system-auth 
+
+Require Authentication for Single User Mode
+Require root password when entering single user mode, open /etc/sysconfig/init
+
+Disable Zeroconf Networking
+Zeroconf network typically occours when you fail to get an address via DHCP, the interface will be assigned a 169.254.0.0 address.
+
+"NOZEROCONF=yes" >> /etc/sysconfig/network
+
+Disable Interface Usage of IPv6
+Add the following to /etc/sysconfig/network
+NETWORKING_IPV6=no IPV6INIT=no
+-----------------------------------------------------------------------------------------------
+dockerd --icc=false --log-level="info" --default-ulimit nproc=1024:2048 --default-ulimit nofile=100:200 --userns-remap=default --live-restore --userland-proxy=false --no-new-privileges
+
+
+docker run --interactive --tty --security-opt="apparmor:PROFILENAME" --security-opt label=level:TopSecret --cap-add={"NET_ADMIN","SYS_ADMIN"} --read-only --pids-limit 100 --memory 256m centos /bin/bash
